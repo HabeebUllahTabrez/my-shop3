@@ -1,7 +1,7 @@
 const Product = require("../models/product");
 
 exports.getProducts = (req, res, next) => {
-    Product.findAll()
+    Product.fetchAll()
         .then((products) => {
             res.render("shop/product-list", {
                 prods: products,
@@ -15,36 +15,19 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
 
-    Product.findByPk(prodId)
+    Product.findById(prodId)
         .then((product) => {
             res.render("shop/product-detail", {
-                pageTitle: products.title,
+                pageTitle: product.title,
                 path: "/products",
                 product: product,
             });
         })
         .catch((err) => console.log(err));
-
-    // Alternate way to do the same job using findAll method
-    // This method returns an array of products even if it is one
-
-    // Product.findAll({
-    //     where: {
-    //         id: prodId,
-    //     },
-    // })
-    //     .then((products) => {
-    //         res.render("shop/product-detail", {
-    //             pageTitle: products[0].title,
-    //             path: "/products",
-    //             product: products[0],
-    //         });
-    //     })
-    //     .catch((err) => console.log(err));
 };
 
 exports.getIndex = (req, res, next) => {
-    Product.findAll()
+    Product.fetchAll()
         .then((products) => {
             res.render("shop/index", {
                 prods: products,
